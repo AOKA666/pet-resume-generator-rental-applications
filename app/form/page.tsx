@@ -344,7 +344,8 @@ export default function GuidedFormPage() {
         <div className="flex flex-wrap items-center justify-between gap-4 border-b border-slate-200 px-6 py-5 md:px-8 lg:px-10">
           <div>
             <a href="/" className="text-sm font-semibold text-slate-500 transition hover:text-slate-900">← Back to home</a>
-            <h1 className="mt-2 text-2xl font-black md:text-3xl">Guided pet resume builder</h1>
+            <h1 className="mt-2 text-2xl font-black tracking-[-0.03em] text-slate-950 md:text-3xl">Guided pet resume builder</h1>
+            <p className="mt-2 text-sm text-slate-500">A dedicated workspace for building a cleaner, landlord-friendly pet profile.</p>
           </div>
           <div className="rounded-full bg-slate-100 px-4 py-2 text-sm font-semibold text-slate-700">
             Step {currentStep + 1} / {totalSteps}
@@ -370,7 +371,7 @@ export default function GuidedFormPage() {
 
               <div className="soft-card rounded-[30px] p-6 md:p-7">
                 <div className="flex flex-wrap items-center gap-2">
-                  <h2 className="text-2xl font-black">{step.title}</h2>
+                  <h2 className="text-2xl font-black tracking-[-0.03em] text-slate-950 md:text-[2rem]">{step.title}</h2>
                   {step.highImpact ? <span className="rounded-full bg-emerald-100 px-3 py-1 text-xs font-semibold uppercase tracking-[0.15em] text-emerald-900">High impact</span> : null}
                   {step.optional ? <span className="rounded-full bg-white px-3 py-1 text-xs font-semibold uppercase tracking-[0.18em] text-slate-500">Optional</span> : null}
                 </div>
@@ -412,8 +413,11 @@ export default function GuidedFormPage() {
                     {photoPreview ? <img src={photoPreview} alt="Pet preview" className="h-28 w-28 rounded-3xl object-cover" /> : <div className="flex h-28 w-28 items-center justify-center rounded-3xl bg-white/10 text-xs text-slate-300">Optional photo</div>}
                   </div>
 
-                  <div className="mt-6 rounded-3xl border border-white/10 bg-black/20 p-5">
-                    <h3 className="font-bold text-white">Pet resume</h3>
+                  <div className="mt-6 rounded-3xl border border-white/10 bg-black/20 p-5 shadow-inner">
+                    <div className="flex items-center justify-between gap-3">
+                      <h3 className="font-bold text-white">Pet resume</h3>
+                      <span className="rounded-full border border-white/10 bg-white/8 px-3 py-1 text-[11px] font-semibold uppercase tracking-[0.16em] text-slate-300">Live preview</span>
+                    </div>
                     <p className="mt-3 whitespace-pre-wrap text-sm leading-7 text-slate-200">{resume}</p>
                   </div>
 
