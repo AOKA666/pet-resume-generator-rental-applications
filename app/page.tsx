@@ -125,6 +125,7 @@ type Step = {
   title: string;
   description: string;
   optional?: boolean;
+  highImpact?: boolean;
   render: (args: {
     form: FormState;
     handleText: (key: keyof FormState) => (e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => void;
@@ -132,6 +133,10 @@ type Step = {
     setPhotoPreview: (value: string | null) => void;
   }) => ReactNode;
 };
+
+function StepHint({ text }: { text: string }) {
+  return <div className="rounded-2xl border border-emerald-200 bg-emerald-50 px-4 py-3 text-sm leading-6 text-emerald-950">{text}</div>;
+}
 
 export default function Home() {
   const [form, setForm] = useState<FormState>(initialState);
@@ -154,9 +159,84 @@ export default function Home() {
 
   const steps: Step[] = [
     {
+      id: 'pet-basics',
+      title: 'First: who is the pet?',
+      description: 'These details make the whole resume feel concrete immediately.',
+      highImpact: true,
+      render: ({ form, handleText }) => (
+        <div className="space-y-4">
+          <div className="grid gap-4 sm:grid-cols-2">
+            <label className="space-y-2 text-sm font-semibold text-slate-700">
+              <span>Pet name</span>
+              <input value={form.petName} onChange={handleText('petName')} className="field-input" placeholder="Mochi" />
+            </label>
+            <label className="space-y-2 text-sm font-semibold text-slate-700">
+              <span>Species</span>
+              <select value={form.species} onChange={handleText('species')} className="field-input">
+                <option>Dog</option>
+                <option>Cat</option>
+                <option>Rabbit</option>
+                <option>Other</option>
+              </select>
+            </label>
+            <label className="space-y-2 text-sm font-semibold text-slate-700">
+              <span>Breed</span>
+              <input value={form.breed} onChange={handleText('breed')} className="field-input" placeholder="Mini Goldendoodle" />
+            </label>
+            <label className="space-y-2 text-sm font-semibold text-slate-700">
+              <span>Age</span>
+              <input value={form.age} onChange={handleText('age')} className="field-input" placeholder="3 years old" />
+            </label>
+          </div>
+          <StepHint text="People are more likely to keep going when the form starts with easy facts instead of paperwork. So we do that first." />
+        </div>
+      )
+    },
+    {
+      id: 'temperament',
+      title: 'What makes this pet easy to live with?',
+      description: 'This is the highest-converting section. Landlords want calm, predictable, responsible pets.',
+      highImpact: true,
+      render: ({ form, handleText }) => (
+        <div className="space-y-4">
+          <label className="space-y-2 text-sm font-semibold text-slate-700">
+            <span>Temperament</span>
+            <textarea value={form.temperament} onChange={handleText('temperament')} rows={4} className="field-input" placeholder="Friendly, calm indoors, gentle with visitors, sleeps well at night..." />
+          </label>
+          <label className="space-y-2 text-sm font-semibold text-slate-700">
+            <span>Energy level</span>
+            <select value={form.energyLevel} onChange={handleText('energyLevel')} className="field-input">
+              <option>Low</option>
+              <option>Moderate</option>
+              <option>High</option>
+            </select>
+          </label>
+          <StepHint text="Concrete beats cute. 'Calm indoors' is stronger than 'super adorable.'" />
+        </div>
+      )
+    },
+    {
+      id: 'training',
+      title: 'Training and behavior',
+      description: 'Handle the obvious landlord objections before they even ask.',
+      highImpact: true,
+      render: ({ form, handleText, handleCheck }) => (
+        <div className="space-y-4">
+          <div className="grid gap-3 sm:grid-cols-2">
+            <label className="toggle-card"><input type="checkbox" checked={form.houseTrained} onChange={handleCheck('houseTrained')} /> House trained</label>
+            <label className="toggle-card"><input type="checkbox" checked={form.crateTrained} onChange={handleCheck('crateTrained')} /> Crate trained</label>
+          </div>
+          <label className="space-y-2 text-sm font-semibold text-slate-700">
+            <span>Barking / scratching notes</span>
+            <textarea value={form.barkingOrScratching} onChange={handleText('barkingOrScratching')} rows={4} className="field-input" placeholder="Rarely barks indoors, no scratching damage, uses scratching post, no chewing issues..." />
+          </label>
+        </div>
+      )
+    },
+    {
       id: 'owner',
-      title: 'Who is applying?',
-      description: 'Start with the owner details so the resume feels real and grounded.',
+      title: 'Who is applying with the pet?',
+      description: 'A real owner profile makes the application feel more trustworthy.',
       render: ({ form, handleText }) => (
         <div className="grid gap-4 sm:grid-cols-2">
           <label className="space-y-2 text-sm font-semibold text-slate-700">
@@ -171,81 +251,9 @@ export default function Home() {
       )
     },
     {
-      id: 'pet-basics',
-      title: 'Tell us about the pet',
-      description: 'These are the basics landlords look for first.',
-      render: ({ form, handleText }) => (
-        <div className="grid gap-4 sm:grid-cols-2">
-          <label className="space-y-2 text-sm font-semibold text-slate-700">
-            <span>Pet name</span>
-            <input value={form.petName} onChange={handleText('petName')} className="field-input" placeholder="Mochi" />
-          </label>
-          <label className="space-y-2 text-sm font-semibold text-slate-700">
-            <span>Species</span>
-            <select value={form.species} onChange={handleText('species')} className="field-input">
-              <option>Dog</option>
-              <option>Cat</option>
-              <option>Rabbit</option>
-              <option>Other</option>
-            </select>
-          </label>
-          <label className="space-y-2 text-sm font-semibold text-slate-700">
-            <span>Breed</span>
-            <input value={form.breed} onChange={handleText('breed')} className="field-input" placeholder="Mini Goldendoodle" />
-          </label>
-          <label className="space-y-2 text-sm font-semibold text-slate-700">
-            <span>Age</span>
-            <input value={form.age} onChange={handleText('age')} className="field-input" placeholder="3 years old" />
-          </label>
-          <label className="space-y-2 text-sm font-semibold text-slate-700 sm:col-span-2">
-            <span>Weight</span>
-            <input value={form.weight} onChange={handleText('weight')} className="field-input" placeholder="24 lb" />
-          </label>
-        </div>
-      )
-    },
-    {
-      id: 'temperament',
-      title: 'What is your pet like day to day?',
-      description: 'This is one of the highest-signal sections. Keep it simple and concrete.',
-      render: ({ form, handleText }) => (
-        <div className="space-y-4">
-          <label className="space-y-2 text-sm font-semibold text-slate-700">
-            <span>Temperament</span>
-            <textarea value={form.temperament} onChange={handleText('temperament')} rows={4} className="field-input" placeholder="Friendly, calm with visitors, gentle with kids..." />
-          </label>
-          <label className="space-y-2 text-sm font-semibold text-slate-700">
-            <span>Energy level</span>
-            <select value={form.energyLevel} onChange={handleText('energyLevel')} className="field-input">
-              <option>Low</option>
-              <option>Moderate</option>
-              <option>High</option>
-            </select>
-          </label>
-        </div>
-      )
-    },
-    {
-      id: 'training',
-      title: 'Training and behavior',
-      description: 'Answer the landlord anxiety stuff head-on.',
-      render: ({ form, handleText, handleCheck }) => (
-        <div className="space-y-4">
-          <div className="grid gap-3 sm:grid-cols-2">
-            <label className="toggle-card"><input type="checkbox" checked={form.houseTrained} onChange={handleCheck('houseTrained')} /> House trained</label>
-            <label className="toggle-card"><input type="checkbox" checked={form.crateTrained} onChange={handleCheck('crateTrained')} /> Crate trained</label>
-          </div>
-          <label className="space-y-2 text-sm font-semibold text-slate-700">
-            <span>Barking / scratching notes</span>
-            <textarea value={form.barkingOrScratching} onChange={handleText('barkingOrScratching')} rows={4} className="field-input" placeholder="Rarely barks indoors, uses a scratching post, no chewing damage..." />
-          </label>
-        </div>
-      )
-    },
-    {
-      id: 'health',
-      title: 'Health and care records',
-      description: 'Good trust signals. Helpful, but not every field is mandatory.',
+      id: 'trust-signals',
+      title: 'Add extra trust signals',
+      description: 'These help, but users can skip if they do not have everything ready.',
       optional: true,
       render: ({ form, handleText, handleCheck }) => (
         <div className="space-y-4">
@@ -257,49 +265,39 @@ export default function Home() {
             <span>Vet info</span>
             <input value={form.vetInfo} onChange={handleText('vetInfo')} className="field-input" placeholder="Sunset Vet Clinic · Dr. Lee · 555-0123" />
           </label>
-        </div>
-      )
-    },
-    {
-      id: 'rental-history',
-      title: 'Rental history and property care',
-      description: 'This is where you prove the pet is not a risk.',
-      optional: true,
-      render: ({ form, handleText }) => (
-        <div className="space-y-4">
           <label className="space-y-2 text-sm font-semibold text-slate-700">
             <span>Rental history</span>
-            <textarea value={form.rentalHistory} onChange={handleText('rentalHistory')} rows={4} className="field-input" placeholder="Lived in two apartments with no complaints or pet issues..." />
-          </label>
-          <label className="space-y-2 text-sm font-semibold text-slate-700">
-            <span>Damage history / property care</span>
-            <textarea value={form.damageHistory} onChange={handleText('damageHistory')} rows={4} className="field-input" placeholder="No chewing or scratching damage, protective mats used under bowls..." />
+            <textarea value={form.rentalHistory} onChange={handleText('rentalHistory')} rows={3} className="field-input" placeholder="Lived in two rentals with no complaints or pet issues..." />
           </label>
         </div>
       )
     },
     {
       id: 'social-proof',
-      title: 'Reference and extra care details',
-      description: 'Optional, but this part can really help if you have something strong to say.',
+      title: 'Reference, property care, and polish',
+      description: 'This is optional frosting, but strong if they have it.',
       optional: true,
       render: ({ form, handleText }) => (
         <div className="space-y-4">
           <label className="space-y-2 text-sm font-semibold text-slate-700">
+            <span>Damage history / property care</span>
+            <textarea value={form.damageHistory} onChange={handleText('damageHistory')} rows={3} className="field-input" placeholder="No chewing or scratching damage, floor protectors under bowls, regular grooming..." />
+          </label>
+          <label className="space-y-2 text-sm font-semibold text-slate-700">
             <span>Landlord / reference quote</span>
-            <textarea value={form.landlordReference} onChange={handleText('landlordReference')} rows={4} className="field-input" placeholder="Quiet, well cared for, and never caused an issue..." />
+            <textarea value={form.landlordReference} onChange={handleText('landlordReference')} rows={3} className="field-input" placeholder="Quiet, well cared for, and never caused an issue..." />
           </label>
           <label className="space-y-2 text-sm font-semibold text-slate-700">
             <span>Extra care details</span>
-            <textarea value={form.extraCare} onChange={handleText('extraCare')} rows={4} className="field-input" placeholder="Daily walks, monthly grooming, regular nail trims..." />
+            <textarea value={form.extraCare} onChange={handleText('extraCare')} rows={3} className="field-input" placeholder="Daily walks, nail trims, monthly grooming, regular routine..." />
           </label>
         </div>
       )
     },
     {
       id: 'photo',
-      title: 'Add a pet photo',
-      description: 'Optional, but a good photo makes the resume feel much more human.',
+      title: 'Optional photo',
+      description: 'A clean photo adds warmth, but it should never block completion.',
       optional: true,
       render: ({ setPhotoPreview }) => (
         <label className="upload-card">
@@ -326,6 +324,8 @@ export default function Home() {
   const completedSteps = currentStep;
   const progressPercent = Math.round((completedSteps / totalSteps) * 100);
   const stepsRemaining = totalSteps - currentStep - 1;
+  const essentialCompleted = steps.filter((item, index) => !item.optional && index < currentStep).length;
+  const essentialTotal = steps.filter((item) => !item.optional).length;
 
   const goNext = () => setCurrentStep((prev) => Math.min(prev + 1, totalSteps - 1));
   const goBack = () => setCurrentStep((prev) => Math.max(prev - 1, 0));
@@ -338,38 +338,42 @@ export default function Home() {
     <main className="min-h-screen px-4 py-8 text-slate-800 md:px-8">
       <section className="mx-auto mb-8 grid max-w-7xl gap-6 rounded-[32px] border border-emerald-200 bg-white/90 p-8 shadow-xl shadow-emerald-100 backdrop-blur md:grid-cols-[1.02fr_0.98fr]">
         <div className="space-y-4">
-          <span className="inline-flex rounded-full bg-emerald-100 px-3 py-1 text-sm font-semibold text-emerald-900">Rental application helper</span>
-          <h1 className="text-4xl font-black tracking-tight md:text-6xl">Build a Pet Resume One Easy Step at a Time</h1>
+          <span className="inline-flex rounded-full bg-emerald-100 px-3 py-1 text-sm font-semibold text-emerald-900">Pet resume for rental applications</span>
+          <h1 className="text-4xl font-black tracking-tight md:text-6xl">Make landlords trust your pet faster</h1>
           <p className="max-w-2xl text-lg leading-8 text-slate-600">
-            Instead of dumping a huge form on people, this version asks one focused question at a time. Users see their progress, skip low-priority fields, and still get a strong pet resume and landlord note.
+            Instead of a giant stressful form, users answer one small question at a time, skip low-priority fields, and instantly get a stronger pet resume plus a landlord intro note.
           </p>
           <div className="flex flex-wrap gap-3 no-print">
             <a href="#generator" className="rounded-full bg-slate-900 px-5 py-3 font-semibold text-white">Start the guided form</a>
             <button type="button" onClick={() => window.print()} className="rounded-full border border-slate-300 px-5 py-3 font-semibold">Export / Print PDF</button>
           </div>
           <div className="grid gap-3 pt-4 text-sm text-slate-600 sm:grid-cols-3">
-            <div className="rounded-2xl bg-slate-50 p-4"><strong>Lower pressure:</strong> one step at a time.</div>
-            <div className="rounded-2xl bg-slate-50 p-4"><strong>Flexible:</strong> optional details can be skipped.</div>
-            <div className="rounded-2xl bg-slate-50 p-4"><strong>Clear progress:</strong> users always know what is left.</div>
+            <div className="rounded-2xl bg-slate-50 p-4"><strong>Less friction:</strong> starts with easy questions.</div>
+            <div className="rounded-2xl bg-slate-50 p-4"><strong>More completion:</strong> optional steps can be skipped.</div>
+            <div className="rounded-2xl bg-slate-50 p-4"><strong>More trust:</strong> outputs a clean landlord-ready summary.</div>
           </div>
         </div>
         <div className="rounded-[28px] bg-slate-950 p-6 text-white">
           <p className="mb-3 text-sm uppercase tracking-[0.25em] text-emerald-300">Live preview</p>
           <h2 className="text-2xl font-bold">{form.petName || 'Mochi'}</h2>
           <p className="mt-2 text-slate-300">{form.breed || 'Mini Goldendoodle'} · {form.age || '3 years old'} · {form.weight || '24 lb'}</p>
+          <div className="mt-4 rounded-2xl border border-white/10 bg-white/5 px-4 py-3 text-sm text-slate-200">
+            <strong className="block text-white">What users get:</strong>
+            a pet resume, a landlord intro note, and a list of missing trust signals.
+          </div>
           <div className="mt-6 space-y-3 text-sm leading-7 text-slate-200">
             <p>{resume}</p>
           </div>
         </div>
       </section>
 
-      <section id="generator" className="mx-auto grid max-w-7xl gap-6 md:grid-cols-[0.9fr_1.1fr]">
+      <section id="generator" className="mx-auto grid max-w-7xl gap-6 md:grid-cols-[0.88fr_1.12fr]">
         <div className="no-print space-y-5 rounded-[28px] border border-slate-200 bg-white p-6 shadow-lg shadow-slate-200/70">
           <div className="space-y-4">
             <div className="flex items-center justify-between gap-4">
               <div>
-                <h2 className="text-2xl font-bold">Guided pet resume form</h2>
-                <p className="mt-1 text-sm text-slate-500">Everything stays local in the browser. No account, no upload, no drama.</p>
+                <h2 className="text-2xl font-bold">Guided pet resume builder</h2>
+                <p className="mt-1 text-sm text-slate-500">Everything stays local in the browser. No signup. No upload. No nonsense.</p>
               </div>
               <div className="rounded-full bg-slate-100 px-4 py-2 text-sm font-semibold text-slate-700">
                 Step {currentStep + 1} / {totalSteps}
@@ -379,20 +383,27 @@ export default function Home() {
             <div>
               <div className="mb-2 flex items-center justify-between text-sm text-slate-500">
                 <span>{progressPercent}% complete</span>
-                <span>{stepsRemaining > 0 ? `${stepsRemaining} steps left` : 'Final step'}</span>
+                <span>{stepsRemaining > 0 ? `${stepsRemaining} steps left` : 'Last step'}</span>
               </div>
               <div className="h-3 overflow-hidden rounded-full bg-slate-100">
                 <div className="h-full rounded-full bg-emerald-500 transition-all duration-300" style={{ width: `${Math.max(progressPercent, 8)}%` }} />
               </div>
             </div>
 
+            <div className="rounded-2xl border border-slate-200 bg-slate-50 px-4 py-3 text-sm text-slate-700">
+              <strong>Core progress:</strong> {essentialCompleted} / {essentialTotal} essential steps done. Optional steps can be skipped.
+            </div>
+
             <div className="rounded-[24px] border border-slate-200 bg-slate-50 p-5">
               <div className="flex items-start justify-between gap-4">
                 <div>
-                  <h3 className="text-xl font-bold">{step.title}</h3>
+                  <div className="flex flex-wrap items-center gap-2">
+                    <h3 className="text-xl font-bold">{step.title}</h3>
+                    {step.highImpact ? <span className="rounded-full bg-emerald-100 px-3 py-1 text-xs font-semibold uppercase tracking-[0.15em] text-emerald-900">High impact</span> : null}
+                    {step.optional ? <span className="rounded-full bg-white px-3 py-1 text-xs font-semibold uppercase tracking-[0.18em] text-slate-500">Optional</span> : null}
+                  </div>
                   <p className="mt-2 text-sm leading-6 text-slate-600">{step.description}</p>
                 </div>
-                {step.optional ? <span className="rounded-full bg-white px-3 py-1 text-xs font-semibold uppercase tracking-[0.18em] text-slate-500">Optional</span> : null}
               </div>
 
               <div className="mt-5">
@@ -415,14 +426,28 @@ export default function Home() {
                 {currentStep === totalSteps - 1 ? 'Done' : 'Next step'}
               </button>
             </div>
-
-            <div className="rounded-2xl border border-amber-200 bg-amber-50 px-4 py-3 text-sm leading-6 text-amber-950">
-              <strong>Tip:</strong> Keep the early steps short and easy. The point is momentum, not paperwork.
-            </div>
           </div>
         </div>
 
         <div className="space-y-6">
+          <section className="rounded-[28px] border border-emerald-200 bg-emerald-50 p-5 shadow-lg shadow-emerald-100/70 no-print">
+            <div className="flex flex-wrap items-center justify-between gap-4">
+              <div>
+                <p className="text-sm font-semibold uppercase tracking-[0.2em] text-emerald-700">Value preview</p>
+                <h2 className="mt-1 text-2xl font-black">Users see useful output immediately</h2>
+              </div>
+              <div className="flex flex-wrap gap-3">
+                <CopyButton text={introNote} label="Copy intro note" />
+                <CopyButton text={resume} label="Copy resume" />
+              </div>
+            </div>
+            <div className="mt-4 grid gap-4 md:grid-cols-3">
+              <div className="rounded-3xl bg-white p-4 text-sm text-slate-700">A landlord-ready pet summary</div>
+              <div className="rounded-3xl bg-white p-4 text-sm text-slate-700">A copy-paste intro note for the application</div>
+              <div className="rounded-3xl bg-white p-4 text-sm text-slate-700">A checklist of missing trust signals</div>
+            </div>
+          </section>
+
           <section className="print-card rounded-[28px] border border-slate-200 bg-white p-6 shadow-lg shadow-slate-200/70">
             <div className="flex flex-wrap items-start justify-between gap-4">
               <div>
@@ -480,6 +505,15 @@ export default function Home() {
             <ul className="mt-4 space-y-3 text-sm leading-7 text-amber-950">
               {suggestions.length ? suggestions.map((item) => <li key={item}>• {item}</li>) : <li>• Nice. You covered the core trust-building details landlords usually want.</li>}
             </ul>
+          </section>
+
+          <section className="rounded-[28px] border border-slate-200 bg-white p-6 shadow-lg shadow-slate-200/70 no-print">
+            <h2 className="text-2xl font-black">Why this version should convert better</h2>
+            <div className="mt-4 grid gap-4 md:grid-cols-3">
+              <div className="rounded-3xl bg-slate-50 p-4 text-sm text-slate-600">Starts with easy questions to reduce early bounce.</div>
+              <div className="rounded-3xl bg-slate-50 p-4 text-sm text-slate-600">Labels high-impact sections so users know what actually matters.</div>
+              <div className="rounded-3xl bg-slate-50 p-4 text-sm text-slate-600">Shows concrete output value before the form feels long.</div>
+            </div>
           </section>
         </div>
       </section>
