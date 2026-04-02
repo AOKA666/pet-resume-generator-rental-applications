@@ -340,7 +340,7 @@ export default function GuidedFormPage() {
 
   return (
     <main className="min-h-screen px-4 py-6 text-slate-800 md:px-8 lg:px-10">
-      <section className="mx-auto max-w-[1600px] rounded-[36px] border border-slate-200 bg-white shadow-xl shadow-slate-200/70">
+      <section className="glass-panel mx-auto max-w-[1600px] rounded-[40px] shadow-[0_30px_90px_rgba(15,23,42,0.08)]">
         <div className="flex flex-wrap items-center justify-between gap-4 border-b border-slate-200 px-6 py-5 md:px-8 lg:px-10">
           <div>
             <a href="/" className="text-sm font-semibold text-slate-500 transition hover:text-slate-900">← Back to home</a>
@@ -352,7 +352,7 @@ export default function GuidedFormPage() {
         </div>
 
         <div className="grid min-h-[calc(100vh-140px)] xl:grid-cols-[0.92fr_1.08fr]">
-          <div className="border-b border-slate-200 p-6 md:p-8 xl:border-b-0 xl:border-r xl:p-10">
+          <div className="border-b border-slate-200/80 bg-white/60 p-6 md:p-8 xl:border-b-0 xl:border-r xl:p-10">
             <div className="space-y-5">
               <div>
                 <div className="mb-2 flex items-center justify-between text-sm text-slate-500">
@@ -368,7 +368,7 @@ export default function GuidedFormPage() {
                 <strong>Core progress:</strong> {essentialCompleted} / {essentialTotal} essential steps done. Optional steps can be skipped.
               </div>
 
-              <div className="rounded-[28px] border border-slate-200 bg-slate-50 p-6 md:p-7">
+              <div className="soft-card rounded-[30px] p-6 md:p-7">
                 <div className="flex flex-wrap items-center gap-2">
                   <h2 className="text-2xl font-black">{step.title}</h2>
                   {step.highImpact ? <span className="rounded-full bg-emerald-100 px-3 py-1 text-xs font-semibold uppercase tracking-[0.15em] text-emerald-900">High impact</span> : null}
@@ -399,10 +399,10 @@ export default function GuidedFormPage() {
             </div>
           </div>
 
-          <div className="bg-slate-950 p-6 text-white md:p-8 xl:p-10">
+          <div className="dark-panel p-6 text-white md:p-8 xl:p-10">
             <div className="grid gap-6 2xl:grid-cols-[0.92fr_1.08fr]">
               <div className="space-y-6">
-                <section className="rounded-[28px] border border-white/10 bg-white/5 p-6 backdrop-blur">
+                <section className="rounded-[30px] border border-white/10 bg-white/6 p-6 shadow-[0_24px_80px_rgba(0,0,0,0.2)] backdrop-blur-xl">
                   <div className="flex flex-wrap items-center justify-between gap-4">
                     <div>
                       <p className="text-sm font-semibold uppercase tracking-[0.2em] text-emerald-300">Live output</p>
@@ -423,7 +423,7 @@ export default function GuidedFormPage() {
                   </div>
                 </section>
 
-                <section className="rounded-[28px] border border-white/10 bg-white/5 p-6 backdrop-blur">
+                <section className="rounded-[30px] border border-white/10 bg-white/6 p-6 shadow-[0_20px_60px_rgba(0,0,0,0.16)] backdrop-blur-xl">
                   <p className="text-sm font-semibold uppercase tracking-[0.2em] text-emerald-300">Landlord intro note</p>
                   <p className="mt-4 text-sm leading-7 text-slate-200">{introNote}</p>
                   <div className="mt-4 flex flex-wrap gap-3">
@@ -433,14 +433,14 @@ export default function GuidedFormPage() {
               </div>
 
               <div className="space-y-6">
-                <section className="rounded-[28px] border border-amber-300/30 bg-amber-100/10 p-6">
+                <section className="rounded-[30px] border border-amber-300/30 bg-amber-100/10 p-6 shadow-[0_20px_60px_rgba(0,0,0,0.12)] backdrop-blur-xl">
                   <p className="text-sm font-semibold uppercase tracking-[0.2em] text-amber-300">Missing item reminders</p>
                   <ul className="mt-4 space-y-3 text-sm leading-7 text-amber-50">
                     {suggestions.length ? suggestions.map((item) => <li key={item}>• {item}</li>) : <li>• Nice. You covered the core trust-building details landlords usually want.</li>}
                   </ul>
                 </section>
 
-                <section className="rounded-[28px] border border-white/10 bg-white/5 p-6">
+                <section className="rounded-[30px] border border-white/10 bg-white/6 p-6 shadow-[0_20px_60px_rgba(0,0,0,0.14)] backdrop-blur-xl">
                   <h3 className="text-2xl font-black">Why this layout works better</h3>
                   <div className="mt-5 grid gap-4">
                     <div className="rounded-3xl border border-white/10 bg-black/15 p-4 text-sm leading-7 text-slate-200">The form has its own page, so it no longer feels cramped or bolted onto a landing page.</div>
